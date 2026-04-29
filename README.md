@@ -1,156 +1,145 @@
-# ResuMatch UI 🎯
+<div align="center">
 
-> Frontend for the ResuMatch REST API. A "diagnostic terminal" UI — deep space blue with electric cyan accents, built for performing resume/JD match analysis.
+# ResuMatch — UI
 
-**Stack:** Next.js 15 · TypeScript · Tailwind CSS · Framer Motion · Sonner (toasts)
+### Diagnostic-terminal styled frontend for the ResuMatch resume analyzer.
 
----
+Next.js 15 · TypeScript · Tailwind · Framer Motion · Demo Mode
 
-## ✨ Features
+[![Live](https://img.shields.io/badge/live-resumatch--ui--3yv7.vercel.app-000?style=flat-square&logo=vercel)](https://resumatch-ui-3yv7.vercel.app)
+[![Next.js](https://img.shields.io/badge/Next.js-15-000000?style=flat-square&logo=nextdotjs)](https://nextjs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript)](https://www.typescriptlang.org)
+[![Tailwind](https://img.shields.io/badge/Tailwind-4-06B6D4?style=flat-square&logo=tailwindcss)](https://tailwindcss.com)
 
-- 🔐 Full auth flow (register/login with JWT saved to localStorage)
-- 📄 Drag-and-drop PDF resume upload with instant parsing feedback
-- 💼 Job descriptions CRUD with live search
-- ⚡ Analyze flow: pick resume + JD → animated loading → results reveal
-- 🎯 **Animated score gauge** with color-coded verdict (0–100)
-- 🟢 Matched keywords as cyan pills, missing as amber pills
-- 💡 Recommendation card explaining what to add
-- 📚 Match history with detail pages for every past analysis
-- 🌙 Diagnostic terminal aesthetic (CRT scanlines, corner brackets, monospace, serif display)
+**[Live Demo](https://resumatch-ui-3yv7.vercel.app)**  ·  **[Backend Repo](https://github.com/Aman100705/resumatch)**
+
+</div>
 
 ---
 
-## 🚀 Quick Start
+## What it is
 
-### 1. Install dependencies
-```bash
-npm install
-```
+A production-grade frontend for **[ResuMatch](https://github.com/Aman100705/resumatch)** — an ATS-style resume-to-job-description scorer.
 
-### 2. Configure API URL
+The UI is intentionally distinct from typical SaaS dashboards: it borrows from terminal aesthetics, bracket frames, scan-lines, and monospace typography to evoke a *technical instrument* rather than a marketing landing page.
+
+It runs in two modes:
+
+- **🟢 Live mode** — talks to the [Spring Boot backend](https://github.com/Aman100705/resumatch) on localhost:8080. Real PDF parsing, real PostgreSQL, real JWT auth.
+- **🔵 Demo mode** — set `NEXT_PUBLIC_DEMO_MODE=true`. The entire backend is mocked client-side using `localStorage`. Same UI, same algorithm, no server. This is what runs on Vercel.
+
+---
+
+## Aesthetic
+
+A "diagnostic terminal" theme:
+
+- **Palette** — deep blue-black `#0b0f1a` background, electric cyan `#00ffc6` signal accent
+- **Type** — Fraunces (serif display) paired with JetBrains Mono (UI labels & data)
+- **Motifs** — corner-bracket panels, ASCII dividers, scan-line CRT overlay, animated radial score gauge
+- **Motion** — Framer Motion for staggered list reveals and the hero score animation
+
+---
+
+## Features
+
+- 🔐 **Auth flow** — register + login, JWT stored in `localStorage`, route guard on dashboard
+- 📄 **Resume upload** — drag-and-drop PDF (5 MB cap), real-time client validation
+- 📝 **JD management** — full CRUD with search, modal-based creation
+- 🎯 **Analysis screen** — pick resume + JD, animated score gauge sweep from 0 → score
+- 📊 **Match history** — paginated past analyses with score-coded list rows
+- 🔍 **Match detail** — full breakdown: matched keywords, missing keywords, recommendation
+- 🟢 **Demo mode toggle** — flip a single env var to run without a backend
+
+---
+
+## Tech stack
+
+| Layer            | Technology                              |
+| ---------------- | --------------------------------------- |
+| Framework        | Next.js 15 (App Router)                 |
+| Language         | TypeScript 5                            |
+| Styling          | Tailwind CSS 4                          |
+| Animations       | Framer Motion                           |
+| State            | React hooks + `localStorage`            |
+| Icons            | Lucide React                            |
+| Auth             | JWT (Bearer tokens)                     |
+| Hosting          | Vercel                                  |
+
+---
+
+## Getting started
+
+### Prerequisites
+- Node.js 20+
+- (Optional) The [ResuMatch backend](https://github.com/Aman100705/resumatch) running on `localhost:8080`
+
+### Setup
+
 ```bash
+# 1. Clone
+git clone https://github.com/Aman100705/resumatch-ui.git
+cd resumatch-ui
+
+# 2. Install
+npm install --legacy-peer-deps
+
+# 3. Configure
 cp .env.example .env.local
-```
+# Edit .env.local — set NEXT_PUBLIC_DEMO_MODE=true to run without backend
 
-Edit `.env.local` — point at your running Spring Boot backend:
-```
-NEXT_PUBLIC_API_URL=http://localhost:8080
-```
-
-### 3. Run it
-```bash
+# 4. Run
 npm run dev
 ```
 
-Open http://localhost:3000
+Open **http://localhost:3000**.
 
-> ⚠️ The backend MUST be running on the URL you set. Start ResuMatch Spring Boot first (`./mvnw spring-boot:run` in the `resumatch` project).
+### Environment variables
 
----
-
-## 🎨 The Aesthetic
-
-This UI intentionally **does not** use your portfolio's editorial-amber aesthetic. Each project should stand on its own visually. The diagnostic terminal look evokes:
-
-- Bloomberg Terminal (dense info, monospace, green/cyan accents)
-- Medical imaging UIs (numbered sections, "diagnostic" language)
-- 80s mainframe CRT aesthetic (scan lines, blinking cursors)
-
-**Design tokens** in `tailwind.config.ts`:
-- **`abyss`** — 12 shades of deep blue-black (`#050810` → `#eef0f6`)
-- **`signal`** — electric cyan accent (`#00ffc6`)
-- **`alert.amber`** and **`alert.red`** — status colors only
-
-**Typography:**
-- **Fraunces** for big display serif moments
-- **JetBrains Mono** for nearly everything else
-- **Geist** as a fallback sans
+| Variable                   | Description                                  | Default                |
+| -------------------------- | -------------------------------------------- | ---------------------- |
+| `NEXT_PUBLIC_DEMO_MODE`    | `true` runs without backend (demo)           | `false`                |
+| `NEXT_PUBLIC_API_URL`      | Backend URL (only when demo mode is off)     | `http://localhost:8080`|
 
 ---
 
-## 📁 Project Structure
+## Project structure
 
 ```
 resumatch-ui/
 ├── app/
-│   ├── layout.tsx              # Fonts + Toaster
-│   ├── page.tsx                # Landing page
-│   ├── globals.css             # Scanlines, panels, corner brackets
 │   ├── auth/
-│   │   ├── login/page.tsx
-│   │   └── register/page.tsx
+│   │   ├── login/             # Login page
+│   │   └── register/          # Register page
 │   └── dashboard/
-│       ├── layout.tsx          # Sidebar + AuthGuard
-│       ├── upload/page.tsx     # Drag-and-drop + library
-│       ├── jobs/page.tsx       # JD manager with modal
-│       ├── analyze/page.tsx    # ⭐ The main flow
-│       └── matches/
-│           ├── page.tsx        # History list
-│           └── [id]/page.tsx   # Match detail
+│       ├── upload/            # Resume upload
+│       ├── jobs/              # JD CRUD
+│       ├── analyze/           # Run a new analysis
+│       └── matches/           # History + detail
 ├── components/
-│   ├── brand/Logo.tsx
-│   ├── ui/                     # Button, Input, Textarea, Panel, EmptyState
-│   └── dashboard/              # Sidebar, TopBar, ScoreGauge, AuthGuard, AuthFrame
+│   ├── dashboard/             # Sidebar, AuthGuard, DemoBanner
+│   ├── analyze/               # Score gauge, result panels
+│   └── ui/                    # Buttons, panels, dividers
 ├── lib/
-│   ├── api.ts                  # Full API client for Spring Boot backend
-│   ├── types.ts                # TypeScript DTOs
-│   ├── format.ts               # Date / bytes formatting
-│   └── utils.ts                # className merger
-└── public/                     # (add og-image.png etc. here)
+│   ├── api.ts                 # Real backend client
+│   ├── mockApi.ts             # Demo-mode mock backend
+│   ├── types.ts               # Shared TypeScript types
+│   └── utils.ts               # Date helpers, formatters
+└── public/
 ```
 
 ---
 
-## 🚢 Deployment
+## Engineering decisions worth noting
 
-Deploy to Vercel:
-
-1. Push to GitHub
-2. Import at https://vercel.com/new
-3. **Add env var:** `NEXT_PUBLIC_API_URL` → your deployed backend URL
-4. Deploy
-
-⚠️ Your Spring Boot backend must be deployed somewhere (Railway, Render, Fly.io) BEFORE deploying the UI, otherwise the UI can't talk to it.
-
-### Backend deployment note
-
-If you deploy the backend to Railway (recommended — free tier), you'll need to also allow CORS from your frontend URL. Update `SecurityConfig.java` in the backend:
-
-```java
-cors.setAllowedOriginPatterns(List.of(
-    "http://localhost:3000",
-    "https://resumatch-ui.vercel.app"  // your UI URL
-));
-```
+- **Single API surface, two backends.** `lib/api.ts` exports the same shape regardless of mode — every screen calls `api.uploadResume(file)`, never branches on `DEMO_MODE`.
+- **Mock backend with real algorithm.** `lib/mockApi.ts` reimplements the Java keyword-matching logic in TypeScript so demo-mode scores are meaningful, not random.
+- **Route guarding without middleware.** `<AuthGuard>` is a client component that redirects unauthenticated requests on mount — works on Vercel's static export.
+- **Animated score gauge.** Custom SVG with tick marks, color-by-score (red → amber → cyan), animated sweep using `framer-motion`'s `<motion.path>`.
+- **Score-coded list items.** Match history rows tint subtly based on score range — readable without reading numbers.
 
 ---
 
-## 🎬 Demo Flow
+## License
 
-1. Land on homepage → click "RUN DIAGNOSTIC"
-2. Register an account (takes 5 seconds)
-3. Upload a resume PDF — watch it parse
-4. Click "JOB DESCRIPTIONS" → paste any JD you've applied to
-5. Click "ANALYZE" → pick your resume + the JD → hit "RUN DIAGNOSTIC"
-6. Watch the 2-second loading animation
-7. **Animated score gauge** reveals your match percentage
-8. Scroll down — see matched keywords (cyan) and missing keywords (amber)
-9. Read the recommendation and update your resume accordingly
-
-**This is what you record for LinkedIn.** The 30-second demo = instant "hire this person" signal.
-
----
-
-## 🛣️ Potential v2 features
-
-- [ ] Side-by-side resume/JD diff view
-- [ ] Compare multiple JDs against one resume (batch analyze)
-- [ ] Export match report as PDF
-- [ ] Admin dashboard with total-usage stats
-- [ ] Dark-mode-only (already is — but add a light theme toggle just to show off)
-- [ ] Real-time re-analysis as you type into a JD
-- [ ] Shareable public match URLs (for anonymous demo mode)
-
----
-
-**Built by Aman Patel** · [Portfolio](https://aman-portfolio-lilac.vercel.app) · [GitHub](https://github.com/Aman100705)
+MIT — built by [Aman Patel](https://github.com/Aman100705) · 2026
