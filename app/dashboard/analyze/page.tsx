@@ -183,7 +183,7 @@ function NeedsDataPrompt({ hasResumes, hasJobs }: { hasResumes: boolean; hasJobs
   );
 }
 
-function SelectionList<T extends { id: number; title: string; sub: string; icon: React.ComponentType<{ size?: number; className?: string }> }>({
+function SelectionList<T extends { id: number; title: string; sub: string; icon: React.ElementType }>({
   items,
   selectedId,
   onSelect,
